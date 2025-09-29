@@ -35,4 +35,12 @@ def create_app(test_config=None):
     user_datastore=SQLAlchemyUserDatastore(db, User, Role)
     security.init_app(app, user_datastore)
 
+    with app.app_context():
+        pass
+
+    from .products import products as products_bp
+    app.register_blueprint(products_bp, url_prefix='/api/products')
+    from .seller import seller as seller_bp
+    app.register_blueprint(seller_bp, url_prefix='/api/seller')
+
     return app
