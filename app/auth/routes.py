@@ -16,7 +16,8 @@ from flask_login import (
 )
 from flask_jwt_extended import (
     create_access_token,
-    jwt_required
+    jwt_required,
+    unset_jwt_cookies
 )
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
@@ -52,11 +53,14 @@ def login():
 
 @auth_bp.post('/logout')
 @login_required
-@jwt_required()
 def logout():
     logout_user()
+    
+    response=({'msg': "Successfully logged out!"})
+    unset_jwt_cookies(response)
+
     return jsonify({
-        'msg': "Successfully logged out!",
+        'msg': response,
         'result': True
     }), 200
 

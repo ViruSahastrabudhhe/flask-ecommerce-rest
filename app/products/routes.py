@@ -20,6 +20,8 @@ from flask_jwt_extended import (
 from sqlalchemy import select
 
 @products_bp.get('/product/<int:product_id>')
+@login_required
+@jwt_required()
 def getProduct(product_id):
     product=db.session.execute(select(Product).where(Product.id==product_id)).scalar()
 
@@ -31,6 +33,8 @@ def getProduct(product_id):
         return "Error occurred", 500
 
 @products_bp.post('/create')
+@login_required
+@jwt_required()
 def createProduct():
     try:
         data = request.get_json()
@@ -52,6 +56,8 @@ def createProduct():
         return "Error occurred", 500
     
 @products_bp.delete('/delete/<int:product_id>')
+@login_required
+@jwt_required()
 def deleteProduct(product_id):
     product=db.session.execute(select(Product).where(Product.id==product_id)).scalar()
     
@@ -65,6 +71,8 @@ def deleteProduct(product_id):
         return "Error occurred", 500
     
 @products_bp.put('/edit/<int:product_id>')
+@login_required
+@jwt_required()
 def updateProduct(product_id):
     product=db.session.execute(select(Product).where(Product.id==product_id)).scalar()
 
