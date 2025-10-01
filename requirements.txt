@@ -1,0 +1,9 @@
+Flask
+Flask-Login
+Flask-SQLAlchemy
+pymysql
+Flask-Migrate
+Flask-WTF
+Flask-JWT-Extended
+Flask-Mailman
+Flask-bcrypt
