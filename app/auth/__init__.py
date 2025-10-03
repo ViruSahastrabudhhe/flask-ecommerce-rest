@@ -1,9 +1,13 @@
 from flask import Blueprint
 from app.models import (
     db,
-    User
+    User,
+    RoleUser,
+    Roles
 )
-from app.extensions import login_manager
+from app.extensions import (
+    jwt,
+)
 
 auth = Blueprint('auth', __name__)
 

@@ -1,16 +1,18 @@
 import os
 
 from flask import Flask
-from .models import db
+from .models import (
+    db,
+    Role
+)
 from .extensions import (
     migrate, 
     csrf, 
     mail, 
-    login_manager, 
     jwt,
     bcrypt
 )
-from config import config
+from instance.config import config
 
 def create_app(test_config=None):
     app=Flask(__name__, instance_relative_config=True)
@@ -31,12 +33,15 @@ def create_app(test_config=None):
     migrate.init_app(app, db)
     csrf.init_app(app)
     mail.init_app(app)
-    login_manager.init_app(app)
     jwt.init_app(app)
     bcrypt.init_app(app)
 
     with app.app_context():
-        pass
+        db.create_all()
+        # db.session.add(Role(name="seller"))
+        # db.session.add(Role(name="buyer"))
+        # db.session.add(Role(name="admin"))
+        # db.session.commit()
 
     from .auth import auth as auth_bp
     app.register_blueprint(auth_bp, url_prefix='/api/accounts')

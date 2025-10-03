@@ -1,4 +1,5 @@
 import datetime
+from enum import Enum
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import (
@@ -12,10 +13,15 @@ from sqlalchemy import (
     String,
     BIGINT,
     TEXT,
-    VARCHAR
+    VARCHAR,
+    select
 )
-from flask_login import UserMixin
 from dataclasses import dataclass
+
+class Roles(Enum):
+    ADMIN=1
+    BUYER=2
+    SELLER=3
 
 mapper_registry = registry(
     type_annotation_map = {
@@ -29,7 +35,7 @@ class Base(DeclarativeBase):
 
 db=SQLAlchemy(model_class=Base)
 
-class User(Base, UserMixin):
+class User(Base):
     __tablename__='user'
 
     id: Mapped[int] = mapped_column(BIGINT, primary_key=True)
@@ -38,7 +44,7 @@ class User(Base, UserMixin):
     username: Mapped[str] = mapped_column(unique=True)
     created_at: Mapped[datetime.datetime] = mapped_column(default=lambda: datetime.datetime.now())
     updated_at: Mapped[datetime.datetime] = mapped_column(nullable=True)
- 
+
 class Role(Base):
     __tablename__='role'
 
